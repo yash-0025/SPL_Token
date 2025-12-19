@@ -1,0 +1,77 @@
+Single contract framework
+- simpler deployment
+- all logic in one transaction
+- lower compute costs
+- easier state management
+- single upgrade authority
+
+Multiple contract framework
+- independent upgrades [but we didn't need upgradeable functions]
+- smaller focused programs
+- can reuse governance program across projects
+
+
+Architecture
+- State manangement
+1. What state is gobal? [governance,config, program setting]
+2. What state is per wallet? [sell history, blacklist status]
+3. What state is temporary? [proposals, pending approvals]
+- Access Control
+1. Who can mint? [program authority]
+2. Who can blacklist? [3/5 governance]
+3. Who can whitelist? [governance]
+4. who can transfer? [anyone with limits]
+- Upgradeabiblity
+1. should the program be upgradeable? [usually yes for fixes]
+2. What should be immutable? [tax rates, governance rules]
+3. How to prevent malicious upgrades? [multisig on upgrade authority]
+
+Storage for blacklist - Single account with Vec or Separate PDAs[preferred because scalable and no size limits]
+Sell History - Store all history or Store last 24h history [storing all will be costly if onchain]
+Governance state - Store proposals in main state or separate accounts per proposal [preferred]
+Sell Detection - Check all transfer or only check flagged transfers [use hybrid DEX + flag]
+Whitelist check - On chain lockup or off chain lockup [Can do both for more security]
+Timelock - state in proposal or separate timelock account [REcommended in proposal for simpler approach]
+
+
+1. Token Mint [Mint Accounts]
+2. Users [Token Account]
+3. Governance [5 signers]
+4. Blacklist [banned wallets]
+5. Whitelist [exempt wallets]
+6. Sell History [ per-wallet-tracking ]
+
+- Token has => Mint Authority
+- User has => Token Balance
+- User can be => Blakclisted
+- User can be => Whitelisted
+- User has => Sell history
+- Governance controls => Blacklist
+- Governance controls => Whitelist
+
+Desing Data flow 
+User request -> Validation -> State Check -> Execute -> Update State -> Emit Event
+
+1. How to enforce 0% taxes ?
+=> Use standard SPL token via CPI. it has no tax mechanism so you can't accidentally add taxes
+
+2. How to prevent future tax addition?
+=> Combination of No tax function in code + governance controls upgrades
+
+3. How to implement 3/5 multisig?
+=> Will use custom logic where we store 5 pubkeys and we will check for 3 approvals among those 5
+
+4. How to implement 24h timelock?
+=> By storing timestamp , check Clock::get() [on chain timestamp check is secure]
+
+5. How to track rolling 24h sell limit?
+=> We can store all transaction or we can store only last24 hour and older entries will be deleted automatically
+
+6. How to detect sells vs transfers?
+=> We can use hybrid method by checking known  DEX program IDS [may be not possible to check all DEXes + optional manual flag for flexibility]
+
+
+Q.1] How we are going to restrict Bridge, Bond and Claim interactions?
+Q.2] Normal peer to peer should not be blocked after blacklisting . Is this what they want?
+Q.3] How we are going to solve this rolling period issue like if we want to implement this in contract then we have to store onchain.
+Q.4] 
