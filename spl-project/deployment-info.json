@@ -1,0 +1,13 @@
+{
+  "programId": "Gdcm1yXvSNjvLNWUdi7XfghXhatjrkWB8EHbtUpmPkUL",
+  "mint": "52RXuXrTNBDwvvsoQT4hrA6Xg5CHaLbirAmPuxxGNUtk",
+  "metadata": "5eSuYgfkPsQ32fA4mfZ2AKvsGmi4SyGwKXPbehEc2yjW",
+  "statePda": "CVmin7GsgMp3Yju7XtCYvfRX41TW7652MqZAqiQMLQwT",
+  "tokenAccount": "D3nzghS6YLA19Tjojsw3UWyEQqKntKjubZEztTT7Zn3Y",
+  "totalSupply": 100000000000,
+  "decimals": 9,
+  "name": "NC",
+  "symbol": "NC",
+  "network": "https://api.devnet.solana.com",
+  "deployedAt": "2025-12-22T15:16:40.730Z"
+}

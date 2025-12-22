@@ -1,7 +1,8 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, MintTo, Token, TokenAccount, Burn, Transfer};
+use anchor_spl::token::{self, MintTo, Token, Burn, Transfer, SetAuthority};
+use anchor_spl::token::spl_token::instruction::AuthorityType;
 
-declare_id!("5bDo3Z5ssnupAZkapYF8XMmQdyWy7eNmcKzfNKAZ2DGf");
+declare_id!("Gdcm1yXvSNjvLNWUdi7XfghXhatjrkWB8EHbtUpmPkUL");
 
 #[program]
 pub mod spl_project {
@@ -91,9 +92,34 @@ pub mod spl_project {
         Ok(())
     }
 
+    pub fn revoke_mint_authority(ctx: Context<RevokeMintAuthority>) -> Result<()> {
+        msg!("Revoking mint authority for : {:?}", ctx.accounts.mint.key());
 
+        // Create PDA signer
+        let bump = ctx.accounts.state.bump;
+        let state_seed = b"state";
+        let bump_seed = [bump];
+        let seeds = &[state_seed.as_ref(), &bump_seed[..],];
+        let signer = &[&seeds[..]];
 
+        // Call SPL Tokens set authority via CPI
+        token::set_authority(
+            CpiContext::new_with_signer(
+                ctx.accounts.token_program.to_account_info(),
+                SetAuthority {
+                    account_or_mint: ctx.accounts.mint.to_account_info(),
+                    current_authority: ctx.accounts.state.to_account_info(),
+                },
+                signer,
+            ),
+            AuthorityType::MintTokens,
+            None,
+        )?;
+        msg!("Mint authority successfully revoked!");
+        Ok(())
+    }
 }
+
 
 // Context Structures
 
@@ -170,6 +196,21 @@ pub struct TransferTokens<'info> {
     pub token_program: Program<'info, Token>,
 }
 
+
+#[derive(Accounts)]
+pub struct RevokeMintAuthority<'info> {
+    #[account(
+        seeds=[b"state"],
+        bump=state.bump,
+    )]
+    pub state: Account<'info, TokenState>,
+    
+    /// CHECK: SPL Token mint account (validated by token program)
+    #[account(mut)]
+    pub mint: UncheckedAccount<'info>,
+
+    pub token_program: Program<'info, Token>,
+}
 
 
 // Account structures
