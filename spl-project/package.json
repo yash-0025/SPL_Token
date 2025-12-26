@@ -3,7 +3,9 @@
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
-    "deploy": "ts-node scripts/deploy.ts"
+    "deploy": "ts-node scripts/deploy.ts",
+    "test": "anchor test",
+    "test:nc-token": "anchor test tests/nc-token.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.0",

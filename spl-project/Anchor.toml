@@ -6,7 +6,8 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-spl_project = "Gdcm1yXvSNjvLNWUdi7XfghXhatjrkWB8EHbtUpmPkUL"
+nc_token = "Gdcm1yXvSNjvLNWUdi7XfghXhatjrkWB8EHbtUpmPkUL"
+multisig_governance = "MultiSigGov1111111111111111111111111111111"
 
 [registry]
 url = "https://api.apr.dev"

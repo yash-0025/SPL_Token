@@ -1,12 +1,12 @@
 [package]
-name = "nc-token"
+name = "multisig-governance"
 version = "0.1.0"
-description = "NC Token - No owner, no admin, no fees"
+description = "MultiSig Governance for NC Token"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "nc_token"
+name = "multisig_governance"
 
 [features]
 default = []
@@ -16,10 +16,11 @@ no-idl = []
 no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
-
 [dependencies]
 anchor-lang = "0.31.0"
 anchor-spl = "0.31.0"
+nc-token = { path = "../spl-project" }
 
 [patch.crates-io]
 zeroize = "1.8.1"
+
