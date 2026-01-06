@@ -8,6 +8,7 @@ skip-lint = false
 [programs.devnet]
 nc_token = "Gdcm1yXvSNjvLNWUdi7XfghXhatjrkWB8EHbtUpmPkUL"
 multisig_governance = "MultiSigGov1111111111111111111111111111111"
+presale = "Presale1111111111111111111111111111111111111"
 
 [registry]
 url = "https://api.apr.dev"
